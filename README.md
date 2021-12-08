@@ -6,7 +6,7 @@
 - Manual installation:
 
         cd <Data Directory>/Packages
-        git clone https://github.com/ryandao/SublimeYamlToJson.git
+        git clone https://github.com/Croebh/SublimeYamlToJson.git
 
 The location of `Data Directory` can be found in this [document](http://sublimetext.info/docs/en/basic_concepts.html) or simply just go to `Preferences > Browse Packages`. 
 
