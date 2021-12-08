@@ -7,6 +7,14 @@ except ValueError:
   # For Sublime Test 2
   import yaml2 as yaml
 
+#Using a custom Dumper class to prevent changing the global state
+class CustomDumper(yaml.Dumper):
+    #Super neat hack to preserve the mapping key order. See https://stackoverflow.com/a/52621703/1497385
+    def represent_dict_preserve_order(self, data):
+        return self.represent_dict(data.items())    
+
+CustomDumper.add_representer(dict, CustomDumper.represent_dict_preserve_order)
+
 class BaseCommand(sublime_plugin.TextCommand):
   def get_selections(self):
     selections = []
@@ -40,10 +48,11 @@ class JsonToYamlCommand(BaseCommand):
     for selection in self.get_selections():
       try:
         result = json.loads(self.view.substr(selection))
-        yaml_str = yaml.safe_dump(
+        yaml_str = yaml.dump(
           result,
           indent=2,
           default_flow_style=False,
+          Dumper=CustomDumper
         )
 
         self.view.replace(edit, selection, yaml_str)
